@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>CKEditor 5 Framework – Implementing a simple widget</title>
+
+  <style>
+    .simple-box {
+      padding: 10px;
+      margin: 1em 0;
+
+      background: rgba(0, 0, 0, 0.1);
+      border: solid 1px hsl(0, 0%, 77%);
+      border-radius: 2px;
+    }
+
+    .simple-box-title,
+    .simple-box-description {
+      padding: 10px;
+      margin: 0;
+
+      background: #FFF;
+      border: solid 1px hsl(0, 0%, 77%);
+    }
+
+    .simple-box-title {
+      margin-bottom: 10px;
+    }
+
+    .tester-box {
+      border: 1px solid lightgray;
+    }
+
+    .tester-box-title {
+      background-color: gray;
+      color: white;
+      padding: 15px;
+    }
+
+    .tester-box-description {
+      background-color: lightgray;
+      color: black;
+      padding: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="editor">
+    <p>This is a simple box:</p>
+
+    <section class="simple-box">
+      <h1 class="simple-box-title">Box title</h1>
+      <div class="simple-box-description">
+        <p>The description goes here.</p>
+        <ul>
+          <li>It can contain lists,</li>
+          <li>and other block elements like headings.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <div id="submit">llllllllll</div>
+
+  <script src="dist/bundle.js"></script>
+
+  <script defer>
+    console.log('here')
+    let editor
+    ClassicEditor
+      .create(document.querySelector('#editor'), {
+        language: {
+          ui: 'en',
+          content: 'fa'
+        },
+        simpleUpload: {
+          // The URL that the images are uploaded to.
+          uploadUrl: 'http://127.0.0.1:8000/topics/save-image/',
+
+          // Enable the XMLHttpRequest.withCredentials property.
+          withCredentials: true,
+
+          // Headers sent along with the XMLHttpRequest to the upload server.
+          headers: {
+            'X-CSRF-TOKEN': 'CSRF-Token',
+          }
+        }
+      })
+      .then(newEditor => {
+        // window.editor = newEditor;
+        editor = newEditor;
+        console.log(Array.from(newEditor.ui.componentFactory.names()))
+        // CKEditorInspector.attach('editor', editor);
+      })
+      .catch(err => {
+        console.error(err.stack);
+      });
+
+    // console.log(editor.getData())  // getData() does NOT work immediately after editor is created
+    document.querySelector('#submit').addEventListener('click', () => {
+      const editorData = editor.getData();
+      console.log(editorData)  // getData() works here
+      // ...
+    });
+  </script>
+</body>
+
+</html>
