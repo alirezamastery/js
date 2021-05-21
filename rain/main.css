@@ -1,0 +1,85 @@
+:root {
+  --clr-bg: black;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+ *{
+   text-decoration: none;
+ }
+@font-face {
+  font-family: SFSquare;
+  src: url("sf-square-head/SF\ Square\ Head\ Condensed.ttf");
+}
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--clr-bg);
+  font-family: Roboto, cursive;
+  color: white;
+  padding-right: 10rem;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.5rem;
+  overflow: hidden;
+}
+
+#rain-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  z-index: -1;
+  font-family: SFSquare;
+  /* filter: blur(2px); */
+}
+
+.drop-line {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  font-size: 4rem;
+  margin: 0;
+  padding: 0;
+}
+
+.drop-char {
+  font-size: 4rem;
+  color: white;
+  margin: 3px 0;
+  padding: 0;
+  height: 36px;
+}
+
+.drop-line>.drop-char:not(:first-child, :nth-child(2), :nth-child(3)) {
+  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3),
+    0 0 0.45em currentColor;
+}
+
+.container {
+  margin: 5%;
+  width: 100%;
+  height: 100%;
+}
+nav > ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+font-size: 2rem;
+}
+nav > ul > li {
+  margin: 1rem;
+}
