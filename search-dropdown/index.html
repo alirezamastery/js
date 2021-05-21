@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./style.css" rel="stylesheet" />
+  <script src="./js/utils.js" defer></script>
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div class="dropdown-container">
+    <div class="dropdown-selector" tabindex="0">
+      <span>dropdown</span>
+      <i class="arrow down"></i>
+    </div>
+    <div class="dropdown-content">
+      <div class="dropdown-search">
+        <input type="text" class="drp-input">
+      </div>
+      <div class="dropdown-result">
+        results:
+        <p>result</p>
+        <p>result</p>
+        <p>result</p>
+        <p>result</p>
+        <p>result</p>
+        <p>result</p>
+        <p>result</p>
+        <p>result</p>
+        <p>result</p>
+        <p>result</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-container">
+    <input type="text" class="search-input">
+    <div class="search-result">
+      <a href="#">click</a>
+    </div>
+  </div>
+
+</body>
+
+<script>
+  const dropContainer = document.querySelector('.dropdown-container');
+  const dropSelector = document.querySelector('.dropdown-selector');
+  const dropContent = document.querySelector('.dropdown-content');
+  const dropSearch = document.querySelector('.dropdown-search');
+  const dropSearchInput = document.querySelector('.drp-input')
+  const dropResult = document.querySelector('.dropdown-result');
+
+  function toggleDropdown() {
+    if (dropContent.classList.contains('show')) {
+      dropContent.classList.remove('show');
+    } else {
+      dropContent.classList.add('show');
+    }
+  }
+
+  async function callAPI() {
+    try {
+      const url = 'https://random-data-api.com/api/computer/random_computer?size=5'
+      const res = await fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          dropResult.innerHTML = ''
+          for (const obj of data) {
+            const div = document.createElement('DIV')
+            div.classList.add('result-obj')
+            div.innerText = obj.stack
+            dropResult.appendChild(div)
+          }
+        })
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
+  function debounce(context, func, delay) {
+    let timeout;
+
+    return (...arguments) => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+
+      timeout = setTimeout(() => {
+        func.apply(context, arguments);
+      }, delay);
+    };
+  };
+
+  const debouncedApiCall = debounce(this, callAPI, 1000)
+
+  dropSelector.addEventListener('click', () => {
+    toggleDropdown()
+    handleClickOutside(dropContainer, dropContent)
+  })
+
+  dropSearchInput.addEventListener('input', debouncedApiCall)
+
+  // ----------------------------------------------------------
+  const searchContainer = document.querySelector('.search-container');
+  const searchInput = document.querySelector('.search-input');
+  const searchResult = document.querySelector('.search-result');
+
+  function toggleResult() {
+    if (searchResult.classList.contains('show')) {
+      searchResult.classList.remove('show');
+    } else {
+      searchResult.classList.add('show');
+    }
+  }
+
+  searchInput.addEventListener('focusin', e => {
+    searchResult.classList.add('show');
+    searchInput.classList.add('result-open');
+    handleClickOutside(searchContainer, searchResult)
+  })
+</script>
+
+</html>
