@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./funcs.js" defer></script>
+  <title>Document</title>
+</head>
+<style>
+  .result {
+    width: 20rem;
+    height: 20rem;
+    background-color: bisque;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<body>
+  <input id="input" type="text" oninput="inputChange()" />
+  <div class="result"></div>
+</body>
+
+</html>
+
+<script>
+  // Restricts input for the given textbox to the given inputFilter function.
+  function setInputFilter(textbox, inputFilter) {
+    ["input",].forEach(
+      function (event) {
+        textbox.addEventListener(event, function () {
+          const commaRemoved = this.value.replace(/,/g, '')
+          let str = numberWithCommas(commaRemoved)
+          if (inputFilter(commaRemoved)) {
+            if (commaRemoved !== '' && commaRemoved[commaRemoved.length - 1] !== '.' && commaRemoved[commaRemoved.length - 1] !== '0') {
+              str = numberWithCommas(parseFloat(commaRemoved))
+            }
+            this.value = str
+            console.log(`first if: ${commaRemoved} | ${parseFloat(commaRemoved)} | ${numberWithCommas(parseFloat(commaRemoved))}`)
+            this.oldValue = this.value;
+            this.oldSelectionStart = this.selectionStart;
+            this.oldSelectionEnd = this.selectionEnd;
+          } else if (this.hasOwnProperty("oldValue")) {
+            this.value = this.oldValue;
+            this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+          } else {
+            this.value = "";
+          }
+        });
+      });
+  }
+
+  const numberWithCommas = x => x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+  const characterFilter = value => /^\d*\.?\d*$/.test(value);
+
+  const input = document.getElementById('input')
+
+  setInputFilter(input, characterFilter);
+
+  function inputChange() {
+    // console.log(input.value)
+  }
+</script>
