@@ -11,7 +11,6 @@
 </head>
 
 <body>
-
   <div class="dropdown-container">
     <div class="dropdown-selector" tabindex="0">
       <span>dropdown</span>
@@ -21,7 +20,8 @@
       <div class="dropdown-search">
         <input type="text" class="drp-input">
       </div>
-      <div class="dropdown-result">
+      <div id="spinner" class="spinner" style="display: none;"></div>
+      <div class="dropdown-result" style="display: none">
         results:
         <p>result</p>
         <p>result</p>
@@ -51,8 +51,9 @@
   const dropSelector = document.querySelector('.dropdown-selector');
   const dropContent = document.querySelector('.dropdown-content');
   const dropSearch = document.querySelector('.dropdown-search');
-  const dropSearchInput = document.querySelector('.drp-input')
+  const dropSearchInput = document.querySelector('.drp-input');
   const dropResult = document.querySelector('.dropdown-result');
+  const spinner = document.querySelector('.spinner');
 
   function toggleDropdown() {
     if (dropContent.classList.contains('show')) {
@@ -63,28 +64,35 @@
   }
 
   async function callAPI() {
+    if (!(!!dropSearchInput.value)) {
+      dropResult.innerHTML = '';
+      return
+    }
     try {
-      const url = 'https://random-data-api.com/api/computer/random_computer?size=5'
+      spinner.style.display = 'flex';
+      dropResult.style.display = 'none';
+      const url = 'https://random-data-api.com/api/computer/random_computer?size=5';
       const res = await fetch(url)
         .then(res => res.json())
         .then(data => {
-          dropResult.innerHTML = ''
+          dropResult.innerHTML = '';
           for (const obj of data) {
-            const div = document.createElement('DIV')
-            div.classList.add('result-obj')
-            div.innerText = obj.stack
-            dropResult.appendChild(div)
+            const div = document.createElement('DIV');
+            div.classList.add('result-obj');
+            div.innerText = obj.stack;
+            dropResult.appendChild(div);
+            spinner.style.display = 'none';
+            dropResult.style.display = 'block';
           }
-        })
+        });
     }
     catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
   function debounce(context, func, delay) {
     let timeout;
-
     return (...arguments) => {
       if (timeout) {
         clearTimeout(timeout);
@@ -96,14 +104,14 @@
     };
   };
 
-  const debouncedApiCall = debounce(this, callAPI, 1000)
+  const debouncedApiCall = debounce(this, callAPI, 300);
 
   dropSelector.addEventListener('click', () => {
-    toggleDropdown()
-    handleClickOutside(dropContainer, dropContent)
-  })
+    toggleDropdown();
+    handleClickOutside(dropContainer, dropContent);
+  });
 
-  dropSearchInput.addEventListener('input', debouncedApiCall)
+  dropSearchInput.addEventListener('input', debouncedApiCall);
 
   // ----------------------------------------------------------
   const searchContainer = document.querySelector('.search-container');
@@ -121,8 +129,8 @@
   searchInput.addEventListener('focusin', e => {
     searchResult.classList.add('show');
     searchInput.classList.add('result-open');
-    handleClickOutside(searchContainer, searchResult)
-  })
+    handleClickOutside(searchContainer, searchResult);
+  });
 </script>
 
 </html>
