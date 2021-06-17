@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> -->
+  <script src="./tinymce.min.js"></script>
+
+</head>
+
+<body>
+
+  <h1>TinyMCE Quick Start Guide</h1>
+  <div id="changeContent">change content</div>
+  <form method="post">
+    <textarea id="mytextarea">Hello, World!</textarea>
+    <button type="submit">submit</button>
+  </form>
+
+  <script defer>
+    tinymce.init({
+      selector: '#mytextarea',
+      plugins: 'advlist link image lists directionality',
+      toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright | ltr rtl | outdent indent',
+      menubar: '',
+      // setup: function (editor) {
+      //   editor.on('init', function (e) {
+      //     editor.setContent('<p>Hello world!</p>');
+      //   });
+      // }
+    });
+
+    const changer = document.getElementById('changeContent')
+    changer.addEventListener('click', () => {
+      console.log('changer clicked')
+      var editor = tinymce.get('mytextarea');
+      var content = editor.getContent();
+      console.log(editor)
+      // content = content.replace('content from javascript');
+      const newContent = `
+      <div style="background-color:red">this is inside a div</div>
+      `
+      editor.setContent(newContent);
+    })
+
+  </script>
+
+</body>
+
+</html>
