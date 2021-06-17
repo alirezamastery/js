@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./cropper/cropper.min.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <input type="file" id="fileInput" accept="image/*" />
+  <div class="img-container">
+    <img src="#" class="image" id="result">
+  </div>
+
+  <div class="modal">
+    <div class="modal-content">
+      <div class="preview-img" id="image-crop">
+        <img src="#" class="cropper-img">
+        <!-- <canvas id="canvas"></canvas> -->
+      </div>
+      <input type="button" value="crop" class="crop-done">
+    </div>
+  </div>
+
+  <script src="./cropper/cropper.min.js"></script>
+  <script defer>
+    const fileInput = document.getElementById('fileInput');
+    const modal = document.querySelector('.modal')
+    const cropBtn = document.querySelector('.crop-done')
+    const image = document.querySelector('.cropper-img')
+    const canas = document.getElementById('canvas')
+    const result = document.getElementById('result')
+    // const context = canvas.get(0).getContext("2d")
+
+    fileInput.onchange = function (e) {
+      const imageFile = (e.target.files && e.target.files[0]) ? e.target.files[0] : null
+      console.log(typeof imageFile)
+      console.log(imageFile)
+      if (imageFile && imageFile.type.match(/^image\//)) {
+        modal.classList.add('show')
+        console.log(imageFile.type)
+
+        const reader = new FileReader();
+        reader.readAsDataURL(imageFile);
+        reader.onload = function (event) {
+          image.src = event.target.result
+          const cropper = new Cropper(image, {
+            aspectRatio: 1 / 1,
+            crop(eve) {
+              console.log(eve.detail.x);
+              console.log(eve.detail.y);
+              console.log(eve.detail.width);
+              console.log(eve.detail.height);
+              console.log(eve.detail.rotate);
+              console.log(eve.detail.scaleX);
+              console.log(eve.detail.scaleY);
+            },
+          });
+          cropBtn.onclick = function () {
+            const croppedimage = cropper.getCroppedCanvas().toDataURL("image/png");
+            result.src = croppedimage
+            modal.classList.remove('show')
+            cropper.destroy()
+          }
+        }
+      } else {
+        alert('please select an image file')
+      }
+    }
+
+  </script>
+</body>
+
+</html>
