@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>Document</title>
+  <!-- Google fonts -->
+</head>
+
+<body>
+
+  <div class="btn" id="btn-container">
+
+  </div>
+
+  <!-- <script type="text/javascript" src="logic.js" defer></script> -->
+  <script defer>
+
+    function shuffleArray(array) {
+      console.log('suffle')
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function setDelays() {
+      const btn = document.getElementById('btn-container')
+      for (let i = 0; i < 50 * 30; i++) {
+        const element = document.createElement('DIV')
+        element.classList.add('cell')
+        btn.appendChild(element)
+      }
+
+      // const pixels = btn.children;
+      const pixels = [];
+      for (let i = 0; i < btn.children.length; i++) {
+        pixels.push(btn.children[i])
+      }
+
+      shuffleArray(pixels)
+      console.log(pixels)
+
+      const pixelGroups = []
+      const pixelGroupsNum = 15
+      const index = Math.floor(Math.random() * pixels.length)
+      console.log(index)
+      console.log(pixels[index])
+      console.log(pixels.pop(index))
+
+      const chunk = 20;
+      for (let i = 0; i < pixels.length; i += chunk) {
+        const temporary = pixels.slice(i, i + chunk);
+        pixelGroups.push(temporary)
+      }
+      console.log(pixelGroups)
+
+      for (let i = 0; i < pixelGroups.length; i++) {
+        for (let j = 0; j < pixelGroups[i].length; j++) {
+          pixelGroups[i][j].style.animationDelay = `${i * 0.02}s`
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', setDelays, false)
+    
+  </script>
+
+</body>
+
+</html>

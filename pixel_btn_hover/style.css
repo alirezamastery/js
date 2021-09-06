@@ -1,0 +1,57 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: #111;
+  font-size: 1.5rem;
+}
+
+.btn {
+  display: grid;
+  /* grid-gap: 0.5rem; */
+  grid-template-columns: repeat(auto-fit, 0.3rem);
+  grid-template-rows: repeat(auto-fit, 0.3rem);
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  font-size: 5rem;
+  border: none;
+  width: 15rem;
+  height: 9rem;
+}
+
+.btn:hover {
+  background-color: transparent;
+}
+
+.cell {
+  height: 0.3rem;
+  width: 0.3rem;
+  background-color: rgb(7, 218, 0);
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in forwards;
+}
+
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1
+  }
+}
