@@ -36,7 +36,11 @@
           const commaRemoved = this.value.replace(/,/g, '')
           let str = numberWithCommas(commaRemoved)
           if (inputFilter(commaRemoved)) {
-            if (commaRemoved !== '' && commaRemoved[commaRemoved.length - 1] !== '.' && commaRemoved[commaRemoved.length - 1] !== '0') {
+            if (
+              commaRemoved !== ''
+               && commaRemoved[commaRemoved.length - 1] !== '.' // needed if accepting decimal values 
+               && commaRemoved[commaRemoved.length - 1] !== '0' // needed if accepting decimal values 
+               ) {
               str = numberWithCommas(parseFloat(commaRemoved))
             }
             this.value = str
@@ -54,7 +58,13 @@
       });
   }
 
+  /* if the input should accept decimal values use numberWithCommas.
+  else use numberWithoutCommas.
+  change the "setInputFilter" accordingly.
+  */
   const numberWithCommas = x => x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+  const numberWithoutCommas = x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
+
   const characterFilter = value => /^\d*\.?\d*$/.test(value);
 
   const input = document.getElementById('input')
